@@ -1,42 +1,33 @@
-interface Todo {
-    id: number;
-    title: string;
-    status: TodoStatus;
-    completedOn?: Date;
-}
-
-enum TodoStatus {
-    ToDo = "todo",
-    InProgress = "in-progress",
-    Done = "done",
-}
-const todoItems: Todo[] = [
-    { id: 1, title: "Learn HTML", status: TodoStatus.Done, completedOn: new Date("2021-09-11") },
-    { id: 2, title: "Learn TypeScript", status: TodoStatus.InProgress },
-    { id: 3, title: "Write the best app in the world", status: TodoStatus.ToDo },
-]
-
-
-
-
-function addTodoItem(todo: string): Todo {
-    const id = getNextId(todoItems)
-
-    const newTodo = {
-        id,
-        title: todo,
-        status: TodoStatus.ToDo,
+function query<T>(
+    items: T[],
+    query: {
+        [TProp in keyof T]?: (val: T[TProp]) => boolean
     }
+) {
+    return items.filter(item => {
+        // iterate through each of the item's properties
+        for (const property of Object.keys(item)) {
 
-    todoItems.push(newTodo)
+            // get the query for this property name
+            const propertyQuery = query[property]
 
-    return newTodo
+            // see if this property value matches the query
+            if (propertyQuery && propertyQuery(item[property])) {
+                return true
+            }
+        }
+
+        // nothing matched so return false
+        return false
+    })
 }
 
-function getNextId<T extends {id: number}>(items: T[]): number {
-    return items.reduce((max, x) => x.id > max ? max : x.id, 0) + 1
-}
-
-const newTodo = addTodoItem("Buy lots of stuff with all the money we make from the app")
-
-console.log(JSON.stringify(newTodo))
+const matches = query(
+    [
+        { name: "Ted", age: 12 },
+        { name: "Angie", age: 31 }
+    ],
+    {
+        name: name => name === "Angie",
+        age: age => age > 30
+    })
