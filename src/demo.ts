@@ -19,6 +19,7 @@ interface Contact {
     name: string;
     status: ContactStatus;
     address: Address;
+    email: string;
 }
 
 interface Query {
@@ -26,7 +27,17 @@ interface Query {
     matches(val): boolean;
 }
 
-function searchContacts(contacts: Contact[], query: Record<keyof Contact, Query>) {
+type ContactQuery = 
+    Partial<
+        Pick<
+            Record<keyof Contact, Query>,
+            "id" | "name"
+        >
+    >
+
+type RequiredContactQuery = Required<ContactQuery>
+
+function searchContacts(contacts: Contact[], query: ContactQuery) {
     return contacts.filter(contact => {
         for (const property of Object.keys(contact) as (keyof Contact)[]) {
             // get the query object for this property
