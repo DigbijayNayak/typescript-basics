@@ -1,20 +1,32 @@
-interface Contact extends Address {
+type ContactName = string;
+
+type ContactStatus = "active" | "inactive" | "new";
+
+type ContactBirthDate = Date | number | string;
+
+interface Contact {
     id: number;
-    name: string;
-    birthDate?: Date;
+    name: ContactName;
+    birthDate?: ContactBirthDate;
+    status?: ContactStatus;
 }
 
 interface Address {
-    line1?: string;
-    line2?: string;
-    province?: string;
-    region?: string;
-    postalCode?: string;
+    line1: string;
+    line2: string;
+    province: string;
+    region: string;
+    postalCode: string;
 }
 
 let primaryContact: Contact = {
-    birthDate: new Date("01-01-1980"),
     id: 12345,
     name: "Jamie Johnson",
-    postalCode: ""
+    status: "active"
 }
+
+type ContactFields = keyof Contact;
+function getValue<T, U extends keyof T>(source: T, propertyName: U) {
+    return source[propertyName]    
+}
+const value = getValue({ min: 1, max: 200 }, "max");
