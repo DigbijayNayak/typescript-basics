@@ -1,12 +1,15 @@
 {
     "compilerOptions": {
-        "allowJs": true,
-        "checkJs": true,
-        "outDir": "build",
-        "target": "ESNext",
-        "noEmit": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true, // install npm i reflect-metadata --save
+        // "allowJs": true,
+        // "checkJs": true,
+        // "outDir": "build",
+        // "target": "ESNext",
+        // "noEmit": true,
+        // "experimentalDecorators": true,
+        // "emitDecoratorMetadata": true, // install npm i reflect-metadata --save
+        "target": "esnext",
+        "outDir": "dist",
+        "module": "CommonJS"
     },
     "include": ["src/**/*"]
 }
